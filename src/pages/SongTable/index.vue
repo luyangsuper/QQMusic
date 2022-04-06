@@ -15,24 +15,23 @@ const pageOption = reactive({
     pageSize: 20,
     total: 0
 })
+/**
+ * @description: 歌曲分页查询
+ * @param {Number} 点击的页数
+ */
 const paginationChange = (value) => {
     pageOption.current = value
     const params = {
-        // key: '周杰伦',
+        key: '周杰伦',
         pageSize: 20,
         pageNo: pageOption.current
     }
     API.getSongPage(params)
     .then(res => {
-        console.log(res)
+        dataSource.value = res.data.list
+        pageOption.total = res.data.total
     })
-    .catch(() => {
-        
-    })
-    // axios.get(`api/search?key=%E5%91%A8%E6%9D%B0%E4%BC%A6&pageSize=20&pageNo=${pageOption.current}`).then((res) => {
-    //     dataSource.value = res.data.data.list;
-    //     pageOption.total = res.data.data.total
-    // });
+    .catch(() => {})
 };
 axios.get("api/search?key=%E5%91%A8%E6%9D%B0%E4%BC%A6&pageSize=20").then((res) => {
     dataSource.value = res.data.data.list;
