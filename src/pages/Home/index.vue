@@ -9,9 +9,9 @@
 </template>
 
 <script setup>
-import Header from './Header/index.vue';
-import Menu from "./Menu/index.vue";
-import Section from './Section/index.vue';
+import Header from './Header.vue';
+import Menu from "./Menu.vue";
+import Section from './Section.vue';
 
 </script>
 
