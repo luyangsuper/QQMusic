@@ -13,10 +13,15 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
-import { message } from 'ant-design-vue';
+import { message } from "ant-design-vue";
+import { storeToRefs } from "pinia";
+import { useMainStore } from "../../store";
+const mainStore = useMainStore();
+const { searchValue } = storeToRefs(mainStore);
 const value = ref("");
 const onSearch = () => {
-    value.value.trim() === "" && message.warning('请输入要搜索的内容');
+    let tirmValue = value.value.trim()
+    tirmValue === "" ? message.warning("请输入要搜索的内容") : searchValue.value = tirmValue
 };
 </script>
 
