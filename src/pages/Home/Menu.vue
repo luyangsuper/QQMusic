@@ -1,7 +1,7 @@
 <template>
     <div class="menu-container" :style="collapsed ? { width: '130px' } : { width: '200px' }">
         <div class="logo">
-            <img src="../../../assets/img/logo.svg" class="logo-img" />
+            <img src="../../assets/img/logo.svg" class="logo-img" />
             QQ音乐
         </div>
         <a-button type="primary" @click="collapsed = !collapsed">
