@@ -5,7 +5,12 @@ const routes = [
     },
     {
         path: '/test2', component: () => import('./pages/SongTable/index.vue')
-    }
+    },
+    {
+        path:'/songPage',
+        name:'SongPage',
+        component:() => import('./pages/SongPage/index.vue')
+    },
 ]
 const router = createRouter({
     history: createWebHistory(),

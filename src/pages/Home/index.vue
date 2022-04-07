@@ -9,14 +9,13 @@
 </template>
 
 <script setup>
-import Header from './Header.vue';
+import { SafetyCertificateFilled } from "@ant-design/icons-vue";
+import Header from "./Header.vue";
 import Menu from "./Menu.vue";
-import Section from './Section.vue';
-
+import Section from "./Section.vue";
 </script>
 
 <style lang="less" scoped>
-
 .container {
     display: flex;
     height: 100%;

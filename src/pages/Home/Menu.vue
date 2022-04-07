@@ -8,7 +8,14 @@
             <MenuUnfoldOutlined v-if="collapsed" />
             <MenuFoldOutlined v-else />
         </a-button>
-        <a-menu mode="inline" theme="light" :inline-collapsed="collapsed" class="menu" v-model:selectedKeys="selectedKeys" @select="handleSelect">
+        <a-menu
+            mode="inline"
+            theme="light"
+            :inline-collapsed="collapsed"
+            class="menu"
+            v-model:selectedKeys="selectedKeys"
+            @select="handleSelect"
+        >
             <a-menu-item key="/test1">
                 <template #icon>
                     <PieChartOutlined />
@@ -21,15 +28,21 @@
                 </template>
                 <span>视频</span>
             </a-menu-item>
+            <a-menu-item key="/songPage">
+                <template #icon>
+                    <PieChartOutlined />
+                </template>
+                <span>歌单</span>
+            </a-menu-item>
         </a-menu>
     </div>
 </template>
 
 <script setup>
 import { reactive, ref } from "vue";
-import { useRouter } from 'vue-router'
+import { useRouter } from "vue-router";
 import { PieChartOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons-vue";
-const router = useRouter()
+const router = useRouter();
 const collapsed = ref(false);
 // const state = reactive({
 //       collapsed: false,
@@ -39,10 +52,10 @@ const collapsed = ref(false);
 //     });
 let selectedKeys = ref(["2"]);
 const handleSelect = (selectedItem) => {
-    const {key} = selectedItem
-    selectedKeys = [key]
-    router.replace({ path: key })
-}
+    const { key } = selectedItem;
+    selectedKeys = [key];
+    router.replace({ path: key });
+};
 </script>
 
 <style scoped lang="less">
