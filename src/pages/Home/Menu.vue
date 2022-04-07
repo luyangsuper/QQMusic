@@ -21,6 +21,12 @@
                 </template>
                 <span>视频</span>
             </a-menu-item>
+             <a-menu-item key="/songList">
+                <template #icon>
+                    <PieChartOutlined />
+                </template>
+                <span>音乐列表</span>
+            </a-menu-item>
         </a-menu>
     </div>
 </template>
