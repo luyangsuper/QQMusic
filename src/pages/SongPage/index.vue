@@ -33,187 +33,64 @@ API.getSongPage().then((res) => {
 </script>
 
 <style lang="less" scoped>
+.cssOfTitle {
+    width: 100%;
+    height: 30px;
+}
+.cssOfBlockPic {
+    float: left;
+    width: 200px;
+    height: 100px;
+    // border: 1px solid blue;
+    margin-right: 10%;
+}
+.cssOfPic {
+    float: left;
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+    position: relative;
+}
+.cssOfText {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    color: #fff;
+}
+.cssOfRightText {
+    float: right;
+    width: 100px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border: 1px solid #000;
+}
+
 .song-page-body {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    // border: 1px solid #000;
 
-    .block-content:nth-child(1) {
-        width: 600px;
-        height: 500px;
-        // border: 1px solid #000;
-        .title {
-            width: 100%;
-            height: 30px;
-        }
-        .block-pic {
-            float: left;
-            width: 200px;
-            height: 100px;
-            // border: 1px solid blue;
-            margin-right: 10%;
-
-            .pic {
-                float: left;
-                width: 100px;
-                height: 100px;
-                background-size: cover;
-                position: relative;
-                .text {
-                    position: absolute;
-                    right: 0px;
-                    bottom: 0px;
-                    color: #fff;
-                }
-            }
-            .right-text {
-                float: right;
-                width: 100px;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                border: 1px solid #000;
-
-                p {
-                    height: 26px;
-                    margin: 0px;
-                    text-align: center;
-                    // border: 1px solid green;
-                }
-            }
-        }
-    }
-.block-content:nth-child(2) {
-        width: 600px;
-        height: 400px;
-        // border: 1px solid #000;
-        .title {
-            width: 100%;
-            height: 30px;
-        }
-        .block-pic {
-            float: left;
-            width: 200px;
-            height: 100px;
-            // border: 1px solid blue;
-            margin-right: 10%;
-
-            .pic {
-                float: left;
-                width: 100px;
-                height: 100px;
-                background-size: cover;
-                position: relative;
-                .text {
-                    position: absolute;
-                    right: 0px;
-                    bottom: 0px;
-                    color: #fff;
-                }
-            }
-            .right-text {
-                float: right;
-                width: 100px;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                border: 1px solid #000;
-
-                p {
-                    height: 26px;
-                    margin: 0px;
-                    text-align: center;
-                    // border: 1px solid green;
-                }
-            }
-        }
-    }
-    .block-content:nth-child(3) {
-        width: 600px;
-        height: 800px;
-        // border: 1px solid #000;
-        .title {
-            width: 100%;
-            height: 30px;
-        }
-        .block-pic {
-            float: left;
-            width: 200px;
-            height: 100px;
-            // border: 1px solid blue;
-            margin-right: 10%;
-
-            .pic {
-                float: left;
-                width: 100px;
-                height: 100px;
-                background-size: cover;
-                position: relative;
-                .text {
-                    position: absolute;
-                    right: 0px;
-                    bottom: 0px;
-                    color: #fff;
-                }
-            }
-            .right-text {
-                float: right;
-                width: 100px;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                border: 1px solid #000;
-
-                p {
-                    height: 26px;
-                    margin: 0px;
-                    text-align: center;
-                    // border: 1px solid green;
-                }
-            }
-        }
-    }
+    .block-content:nth-child(1),
+    .block-content:nth-child(2),
+    .block-content:nth-child(3),
     .block-content:nth-child(4) {
-        width: 600px;
-        height: 600px;
-        // border: 1px solid #000;
         .title {
-            width: 100%;
-            height: 30px;
+            .cssOfTitle;
         }
         .block-pic {
-            float: left;
-            width: 200px;
-            height: 100px;
-            // border: 1px solid blue;
-            margin-right: 10%;
+            .cssOfBlockPic;
 
             .pic {
-                float: left;
-                width: 100px;
-                height: 100px;
-                background-size: cover;
-                position: relative;
+                .cssOfPic;
                 .text {
-                    position: absolute;
-                    right: 0px;
-                    bottom: 0px;
-                    color: #fff;
+                    .cssOfText;
                 }
             }
             .right-text {
-                float: right;
-                width: 100px;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                border: 1px solid #000;
+                .cssOfRightText;
 
                 p {
                     height: 26px;
@@ -224,5 +101,22 @@ API.getSongPage().then((res) => {
             }
         }
     }
+}
+
+.block-content:nth-child(1) {
+    width: 600px;
+    height: 500px;
+}
+.block-content:nth-child(2) {
+    width: 600px;
+    height: 400px;
+}
+.block-content:nth-child(3) {
+    width: 600px;
+    height: 800px;
+}
+.block-content:nth-child(4) {
+    width: 600px;
+    height: 600px;
 }
 </style>
