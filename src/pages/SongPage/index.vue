@@ -10,9 +10,14 @@
                     <div class="text">快来写代码</div>
                 </div>
                 <div class="right-text">
-                    <p>{{ "xxx1" }}</p>
-                    <p>{{ "xxx2" }}</p>
-                    <p>{{ "xxx3" }}</p>
+                    <div class="p-title">
+                        <span>{{ pic.label }}</span>
+                    </div>
+                    <div class="p-list">
+                        <p>{{ "xxx1" }}</p>
+                        <p>{{ "xxx2" }}</p>
+                        <p>{{ "xxx3" }}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -36,20 +41,24 @@ API.getSongPage().then((res) => {
 .cssOfTitle {
     width: 100%;
     height: 30px;
+    padding-top: 16px;
 }
 .cssOfBlockPic {
     float: left;
-    width: 200px;
-    height: 100px;
-    // border: 1px solid blue;
+    width: 378px;
+    height: 163px;
     margin-right: 10%;
+    margin-top: 16px;
+    background-color: gainsboro;
+    border-radius: 8px;
 }
 .cssOfPic {
     float: left;
-    width: 100px;
-    height: 100px;
+    width: 161px;
+    height: 163px;
     background-size: cover;
     position: relative;
+    border-radius: 8px;
 }
 .cssOfText {
     position: absolute;
@@ -59,19 +68,19 @@ API.getSongPage().then((res) => {
 }
 .cssOfRightText {
     float: right;
-    width: 100px;
+    width: 378-161px;
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    border: 1px solid #000;
+    padding-left: 16px;
 }
 
 .song-page-body {
-    width: 100%;
-    height: 100%;
+    width: 90vw;
+    height: 90vh;
     display: flex;
     flex-direction: column;
+    overflow: auto;
 
     .block-content:nth-child(1),
     .block-content:nth-child(2),
@@ -91,12 +100,12 @@ API.getSongPage().then((res) => {
             }
             .right-text {
                 .cssOfRightText;
-
-                p {
-                    height: 26px;
-                    margin: 0px;
-                    text-align: center;
-                    // border: 1px solid green;
+                .p-title{
+                    margin-bottom: 5px;
+                }
+                .p-list {
+                    height: 60%;
+                    border: 1px solid #000;
                 }
             }
         }
@@ -104,19 +113,19 @@ API.getSongPage().then((res) => {
 }
 
 .block-content:nth-child(1) {
-    width: 600px;
-    height: 500px;
+    width: 1000px;
+    height: 900px;
 }
 .block-content:nth-child(2) {
-    width: 600px;
-    height: 400px;
+    width: 1000px;
+    height: 700px;
 }
 .block-content:nth-child(3) {
-    width: 600px;
-    height: 800px;
+    width: 1000px;
+    height: 1300px;
 }
 .block-content:nth-child(4) {
-    width: 600px;
-    height: 600px;
+    width: 1000px;
+    height: 1200px;
 }
 </style>
