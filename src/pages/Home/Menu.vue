@@ -8,24 +8,19 @@
             <MenuUnfoldOutlined v-if="collapsed" />
             <MenuFoldOutlined v-else />
         </a-button>
-        <a-menu mode="inline" theme="light" :inline-collapsed="collapsed" class="menu" v-model:selectedKeys="selectedKeys" @select="handleSelect">
-            <a-menu-item key="/test1">
+        <a-menu
+            mode="inline"
+            theme="light"
+            :inline-collapsed="collapsed"
+            class="menu"
+            v-model:selectedKeys="selectedKeys"
+            @select="handleSelect"
+        >
+            <a-menu-item v-for="item of menuItems" :key="item.key">
                 <template #icon>
                     <PieChartOutlined />
                 </template>
-                <span>推荐</span>
-            </a-menu-item>
-            <a-menu-item key="/test2">
-                <template #icon>
-                    <PieChartOutlined />
-                </template>
-                <span>视频</span>
-            </a-menu-item>
-             <a-menu-item key="/songList">
-                <template #icon>
-                    <PieChartOutlined />
-                </template>
-                <span>音乐列表</span>
+                <span>{{ item.name }}</span>
             </a-menu-item>
         </a-menu>
     </div>
@@ -33,9 +28,9 @@
 
 <script setup>
 import { reactive, ref } from "vue";
-import { useRouter } from 'vue-router'
+import { useRouter } from "vue-router";
 import { PieChartOutlined, MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons-vue";
-const router = useRouter()
+const router = useRouter();
 const collapsed = ref(false);
 // const state = reactive({
 //       collapsed: false,
@@ -43,15 +38,38 @@ const collapsed = ref(false);
 //       openKeys: ['sub1'],
 //       preOpenKeys: ['sub1'],
 //     });
-let selectedKeys = ref(["2"]);
+const menuItems = [
+    {
+        name: "推荐",
+        icon: () => PieChartOutlined,
+        key: "/test1",
+    },
+    {
+        name: "视频",
+        icon: () => PieChartOutlined,
+        key: "/test2",
+    },
+    {
+        name: "音乐列表",
+        icon: () => PieChartOutlined,
+        key: "/songList",
+    },
+];
+let selectedKeys = ref([]);
 const handleSelect = (selectedItem) => {
-    const {key} = selectedItem
-    selectedKeys = [key]
-    router.replace({ path: key })
-}
+    const { key } = selectedItem;
+    router.replace({ path: key });
+};
+
+router.beforeEach(({ path }) => {
+    menuItems.find((item) => item.key === path) ? selectedKeys.value = [path] : selectedKeys.value = [];
+});
 </script>
 
 <style scoped lang="less">
+:deep(.ant-menu) {
+    background: inherit;
+}
 :deep(.ant-menu.ant-menu-inline-collapsed) {
     width: initial;
 }

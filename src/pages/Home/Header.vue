@@ -13,15 +13,22 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
 import { message } from "ant-design-vue";
 import { storeToRefs } from "pinia";
 import { useMainStore } from "../../store";
+const router = useRouter();
 const mainStore = useMainStore();
 const { searchValue } = storeToRefs(mainStore);
 const value = ref("");
 const onSearch = () => {
     let tirmValue = value.value.trim()
-    tirmValue === "" ? message.warning("请输入要搜索的内容") : searchValue.value = tirmValue
+    if(!tirmValue) {
+        message.warning("请输入要搜索的内容")
+    } else {
+        searchValue.value = tirmValue;
+        router.replace({ path: '/searchPage' });
+    }
 };
 </script>
 

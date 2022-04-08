@@ -5,8 +5,9 @@ const routes = [
         component: () => import("./components/HelloWorld.vue"),
     },
     {
-        path: "/test2",
-        component: () => import("./pages/SongTable/index.vue"),
+        path: "/searchPage",
+        name: "SearchPage"
+        component: () => import("./pages/SearchPage/index.vue"),
     },
     {
         path: "/songList",
