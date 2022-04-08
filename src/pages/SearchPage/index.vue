@@ -12,6 +12,8 @@
         />
         <a-pagination
             size="small"
+            :hideOnSinglePage="true"
+            :showSizeChanger="false"
             :total="pageOption.total"
             :pageSize="pageOption.pageSize"
             @change="paginationChange"
@@ -31,7 +33,7 @@ const dataSource = ref([]);
 const pageOption = reactive({
     current: 1,
     pageSize: 20,
-    total: 0,
+    total: 0
 });
 const tableLoading = ref(false);
 watch(searchValue, () => {
@@ -80,4 +82,8 @@ const columns = [
 ];
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+:deep(.ant-menu) {
+    background: inherit;
+}
+</style>
