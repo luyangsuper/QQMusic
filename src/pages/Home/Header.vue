@@ -50,10 +50,10 @@ const onSearch = () => {
         margin-top: 5px;
         width: 50px;
         height: 25px;
-        background: url("@/assets/img/xiong.png");
+        background: url("@/assets/img/brear.png");
         background-size: 400px 25px;
         background-repeat: no-repeat;
-        animation: bear 0.8s steps(8) infinite,move 20s forwards;
+        animation: bear 0.8s steps(8) infinite, move 20s forwards;
     }
 }
 
@@ -67,10 +67,23 @@ const onSearch = () => {
 }
 @keyframes move {
     0% {
-        left: 0px;
+        left: 0;
+    }
+    49% {
+        left: calc(100% - 240px);
+        transform: rotateY(0);
+    }
+    50% {
+        left: calc(100% - 240px);
+        transform: rotateY(180deg);
+    }
+    99%{
+        left: 0;
+        transform: rotateY(180deg);
     }
     100% {
-        left: calc(100% - 250px);
+        left: 0;
+        transform: rotateY(0);
     }
 }
 </style>
