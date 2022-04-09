@@ -56,7 +56,7 @@ const onSearch = () => {
         background: url("@/assets/img/brear.png");
         background-size: 400px 25px;
         background-repeat: no-repeat;
-        animation: bear 0.8s steps(8) infinite, move 20s forwards;
+        animation: bear 0.8s steps(8) infinite, move 100s linear forwards;
     }
 }
 
