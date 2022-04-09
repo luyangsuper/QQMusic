@@ -12,22 +12,22 @@
             </div>
         </div>
         <div v-for="cardItem of otherList" :key="cardItem.title">
-            <h3 class="part-title">{{cardItem.title}}</h3>
-        <div class="part-list-container">
-            <div
-                v-for="item of cardItem.list"
-                :key="item.topId"
-                class="part-card"
-                :style="{ backgroundImage: `url(${item.picUrl})` }"
-            >
-                <div class="part-number-of-statistics">
-                    <icon-font type="icon-erji101" class="icon" />
-                    <span class="part-statistics-text">{{
-                        `${(item.listenNum / 10000).toFixed(1)}万`
-                    }}</span>
+            <h3 class="part-title">{{ cardItem.title }}</h3>
+            <div class="part-list-container">
+                <div
+                    v-for="item of cardItem.list"
+                    :key="item.topId"
+                    class="part-card"
+                    :style="{ backgroundImage: `url(${item.picUrl})` }"
+                >
+                    <div class="part-number-of-statistics">
+                        <icon-font type="icon-erji101" class="icon" />
+                        <span class="part-statistics-text">{{
+                            `${(item.listenNum / 10000).toFixed(1)}万`
+                        }}</span>
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
     </div>
 </template>
@@ -38,8 +38,8 @@ import API from "../api.js";
 const peakList = ref([]);
 const otherList = ref([]);
 API.getRankingList().then((res) => {
-    peakList.value = res.data.find(item => item.title === "巅峰榜").list;
-    otherList.value = res.data.filter(item => item.title !== "巅峰榜");
+    peakList.value = res.data.find((item) => item.title === "巅峰榜").list;
+    otherList.value = res.data.filter((item) => item.title !== "巅峰榜");
 });
 </script>
 
