@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { message } from 'ant-design-vue';
 export default {
-    getSongPage(params) {
+    getRankingList(params) {
         return new Promise((resolve, reject) => {
             axios.get(`api/top/category?showDetail=1`)
                 .then(res => {
