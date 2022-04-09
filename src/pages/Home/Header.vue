@@ -42,7 +42,7 @@ const onSearch = () => {
     // background-color: #f6f6f6;
     background: url("@/assets/img/bear-background.png") repeat;
     background-size: 10% 100%;
-    animation: bearBgMove 20s linear 1;
+    animation: bearBgMove 20s linear 1,bearBgMove2 20s linear 20s infinite;
     display: flex;
 
     .input-search {
@@ -94,10 +94,20 @@ const onSearch = () => {
         background-position: 0 0;
     }
     50% {
-        background-position: -400px 0; //图片往左移动
+        background-position: -100% 0; //图片往左移动
     }
     100%{
         background-position: 0 0;
+    }
+}
+
+@keyframes bearBgMove2 {
+    0%{
+        background-position: 0 0;
+    }
+    100%{
+        background-position: -100% 0; //图片往左移动
+
     }
 }
 
