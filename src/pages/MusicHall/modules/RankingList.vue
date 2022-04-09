@@ -15,7 +15,9 @@
             <h3 class="part-title">{{ cardItem.title }}</h3>
             <div class="part-list-container">
                 <div v-for="item of cardItem.list" :key="item.topId" class="part-card-container">
-                    <icon-font type="icon-24gf-playCircle" class="part-play-icon" />
+                    <!-- <icon-font type="icon-24gf-playCircle" class="part-play-icon" /> -->
+                    <!-- <play-circle-two-tone  class="part-play-icon"/> -->
+                    <play-circle-filled class="part-play-icon" />
                     <div class="part-card" :style="{ backgroundImage: `url(${item.picUrl})` }">
                         <div class="part-number-of-statistics">
                             <icon-font type="icon-erji2-copy" class="icon" />
@@ -31,6 +33,7 @@
 </template>
 
 <script setup>
+import { PlayCircleFilled } from "@ant-design/icons-vue";
 import { ref } from "vue";
 import API from "../api.js";
 const peakList = ref([]);
@@ -96,32 +99,45 @@ API.getRankingList().then((res) => {
 
     .part-card-container {
         position: relative;
+        overflow: hidden;
         width: 14.3%;
-         padding-bottom: 14.3%;
+        margin: 0 0 20px 20px;
+        transition: transform 0.4s ease;
+        border-radius: 8px;
+        cursor: pointer;
+        &:hover {
+            transform: translateY(-8px);
+            .part-play-icon {
+                visibility: visible;
+            }
+        }
         .part-play-icon {
+            visibility: hidden;
             transform: scale(4);
-            // display: none;
             position: absolute;
             left: 47%;
             top: 46%;
+            color: white;
+            z-index: 10;
+            &:hover {
+                color: @primary-color;
+                + .part-card {
+                    filter: brightness(35%);
+                    .part-number-of-statistics {
+                        display: none;
+                    }
+                }
+            }
         }
         .part-card {
             display: flex;
-            width:100%;
-            height: 100%;
-            margin: 0 0 20px 20px;
-            transition: transform 0.4s ease;
-            // padding-bottom: 100%;
+            width: 100%;
+            padding-bottom: 100%;
             background-size: 100% 100%;
-            border-radius: 8px;
             &:hover {
-                transform: translateY(-8px);
                 filter: brightness(35%);
                 .part-number-of-statistics {
                     display: none;
-                }
-                .part-play-icon {
-                    display: block;
                 }
             }
             .part-number-of-statistics {
