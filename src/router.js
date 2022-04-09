@@ -6,7 +6,7 @@ const routes = [
     },
     {
         path: "/searchPage",
-        name: "SearchPage",
+        name: "searchPage",
         component: () => import("./pages/SearchPage/index.vue"),
     },
     {

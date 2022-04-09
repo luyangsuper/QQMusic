@@ -25,10 +25,12 @@
 import { reactive, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useMainStore } from "../../store";
+import {useRoute} from 'vue-router'
 import axios from "axios";
 import API from "./api";
 const mainStore = useMainStore();
-const { searchValue } = storeToRefs(mainStore);
+const { searchObject } = storeToRefs(mainStore);
+const route = useRoute()
 const dataSource = ref([]);
 const pageOption = reactive({
     current: 1,
@@ -36,18 +38,18 @@ const pageOption = reactive({
     total: 0
 });
 const tableLoading = ref(false);
-watch(searchValue, () => {
-    paginationChange(1);
-});
+watch(searchObject, () =>{
+    paginationChange(1)
+})
 /**
  * @description: 歌曲分页查询
  * @param {Number} 点击的页数
  */
-const paginationChange = (value) => {
+const paginationChange = (currentPage) => {
     tableLoading.value = true;
-    pageOption.current = value;
+    pageOption.current = currentPage;
     const params = {
-        key: searchValue.value,
+        key: searchObject.value.value,
         pageSize: 20,
         pageNo: pageOption.current,
     };

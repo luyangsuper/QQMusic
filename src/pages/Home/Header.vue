@@ -19,15 +19,15 @@ import { storeToRefs } from "pinia";
 import { useMainStore } from "../../store";
 const router = useRouter();
 const mainStore = useMainStore();
-const { searchValue } = storeToRefs(mainStore);
+const { searchObject } = storeToRefs(mainStore);
 const value = ref("");
 const onSearch = () => {
     let tirmValue = value.value.trim()
     if(!tirmValue) {
         message.warning("请输入要搜索的内容")
     } else {
-        searchValue.value = tirmValue;
-        router.replace({ path: '/searchPage' });
+        searchObject.value = { value: tirmValue } ;
+        router.replace({ name: 'searchPage' });
     }
 };
 </script>
