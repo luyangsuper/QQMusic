@@ -25,8 +25,8 @@
 </style>
 <style scoped lang="less">
 .section-container {
-    // overflow: auto;
-    // max-height: calc(100% - 72px);
+    overflow: auto;
+    height: calc(100% - 152px);
     width: 100%;
     background-color: #f6f6f6;
 }
