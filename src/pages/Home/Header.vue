@@ -1,6 +1,6 @@
 <template>
     <div class="header-container">
-       <div>
+        <div>
             <a-input-search
                 v-model:value="value"
                 placeholder="input search text"
@@ -8,7 +8,7 @@
                 @search="onSearch"
                 @keyup.enter="onSearch"
             />
-       </div>
+        </div>
         <div class="bear" />
     </div>
 </template>
@@ -39,14 +39,17 @@ const onSearch = () => {
 .header-container {
     width: 100%;
     padding: 20px;
-    background-color: #f6f6f6;
+    // background-color: #f6f6f6;
+    background: url("@/assets/img/bear-background.png") repeat;
+    background-size: 10% 100%;
+    animation: bearBgMove 10s linear infinite forwards;
     display: flex;
 
     .input-search {
         width: 200px;
     }
     .bear {
-        position:relative;
+        position: relative;
         margin-top: 5px;
         width: 50px;
         height: 25px;
@@ -77,13 +80,21 @@ const onSearch = () => {
         left: calc(100% - 240px);
         transform: rotateY(180deg);
     }
-    99%{
+    99% {
         left: 0;
         transform: rotateY(180deg);
     }
     100% {
         left: 0;
         transform: rotateY(0);
+    }
+}
+@keyframes bearBgMove{
+    0%{
+        background-position: 0 0;
+    }
+    100%{
+        background-position: -400px 0; //图片往左移动
     }
 }
 </style>
