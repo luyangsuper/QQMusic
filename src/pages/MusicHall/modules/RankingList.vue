@@ -11,13 +11,15 @@
                 </div>
             </div>
         </div>
-        <h3>地区榜</h3>
+        <h3 class="part-title">地区榜</h3>
         <div class="part-list-container">
             <div v-for="item of partList" :key="item.topId" class="part-card">
                 <div :style="{ backgroundImage: `url(${item.picUrl})` }" class="part-cover">
                     <div class="part-number-of-statistics">
-                        <icon-font type="icon-erji101"/>
-                        <span class="part-statistics-text">{{ `${(item.listenNum / 10000).toFixed(1)}万` }}</span>
+                        <icon-font type="icon-erji101" />
+                        <span class="part-statistics-text">{{
+                            `${(item.listenNum / 10000).toFixed(1)}万`
+                        }}</span>
                     </div>
                 </div>
             </div>
@@ -80,6 +82,11 @@ API.getRankingList().then((res) => {
     }
 }
 
+.part-title{
+    margin-left: 20px;
+    font-weight: 600;
+    font-size: 22px;
+}
 .part-list-container {
     display: flex;
     flex-wrap: wrap;
@@ -110,7 +117,7 @@ API.getRankingList().then((res) => {
                 background-color: black;
                 border-radius: 10px;
                 color: #e5e7e9;
-                .part-statistics-text{
+                .part-statistics-text {
                     margin-left: 2px;
                 }
             }
