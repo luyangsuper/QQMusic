@@ -50,9 +50,9 @@ const menuItems = [
         key: "/test2",
     },
     {
-        name: "音乐列表",
+        name: "音乐馆",
         icon: () => PieChartOutlined,
-        key: "/songList",
+        key: "/musicHall",
     },
 ];
 let selectedKeys = ref([]);

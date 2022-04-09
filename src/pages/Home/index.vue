@@ -4,6 +4,7 @@
         <div class="content">
             <Header></Header>
             <Section></Section>
+            <Footer></Footer>
         </div>
     </div>
 </template>
@@ -12,7 +13,7 @@
 import Header from './Header.vue';
 import Menu from "./Menu.vue";
 import Section from './Section.vue';
-
+import Footer from './Footer.vue'
 </script>
 
 <style lang="less" scoped>

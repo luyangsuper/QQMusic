@@ -10,9 +10,9 @@ const routes = [
         component: () => import("./pages/SearchPage/index.vue"),
     },
     {
-        path: "/songList",
-        name: "SongList",
-        component: () => import("./pages/SongPage/index.vue"),
+        path: "/musicHall",
+        name: "musicHall",
+        component: () => import("./pages/MusicHall/index.vue"),
     },
 ];
 const router = createRouter({
