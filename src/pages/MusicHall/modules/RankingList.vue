@@ -11,6 +11,17 @@
                 </div>
             </div>
         </div>
+        <h3>地区榜</h3>
+        <div class="part-list-container">
+            <div v-for="item of partList" :key="item.topId" class="part-card">
+                <div :style="{ backgroundImage: `url(${item.picUrl})` }" class="part-cover">
+                    <div class="part-number-of-statistics">
+                        <icon-font type="icon-erji101"/>
+                        <span class="part-statistics-text">{{ `${(item.listenNum / 10000).toFixed(1)}万` }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -18,8 +29,12 @@
 import { ref } from "vue";
 import API from "../api.js";
 const peakList = ref([]);
+const partList = ref([]);
 API.getRankingList().then((res) => {
     peakList.value = res.data.find((item) => item.title === "巅峰榜").list;
+});
+API.getRankingList().then((res) => {
+    partList.value = res.data.find((item) => item.title === "地区榜").list;
 });
 </script>
 
@@ -60,6 +75,44 @@ API.getRankingList().then((res) => {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+            }
+        }
+    }
+}
+
+.part-list-container {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px 10px 0 0;
+    .part-card {
+        display: flex;
+        margin: 0 0 20px 20px;
+        transition: transform 0.4s ease;
+        &:hover {
+            transform: translateY(-8px);
+        }
+        .part-cover {
+            width: 150px;
+            height: 150px;
+            background-size: 100% 100%;
+            border-radius: 8px;
+            position: relative;
+            .part-number-of-statistics {
+                position: absolute;
+                right: 10px;
+                bottom: 10px;
+                width: 77px;
+                height: 21px;
+                font-weight: 500;
+                font-size: 12px;
+                text-align: center;
+                line-height: 21px;
+                background-color: black;
+                border-radius: 10px;
+                color: #e5e7e9;
+                .part-statistics-text{
+                    margin-left: 2px;
+                }
             }
         }
     }
