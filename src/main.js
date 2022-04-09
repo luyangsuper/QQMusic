@@ -10,7 +10,7 @@ import router from "./router.js";
 
 const IconFont = createFromIconfontCN({
     //引入阿里的inco图标
-    scriptUrl: "//at.alicdn.com/t/font_3314974_7n4ol3e09lp.js",
+    scriptUrl: "//at.alicdn.com/t/font_3314974_hxpt28l7xgo.js",
 });
 
 const app = createApp(App);

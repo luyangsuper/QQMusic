@@ -14,17 +14,15 @@
         <div v-for="cardItem of otherList" :key="cardItem.title">
             <h3 class="part-title">{{ cardItem.title }}</h3>
             <div class="part-list-container">
-                <div
-                    v-for="item of cardItem.list"
-                    :key="item.topId"
-                    class="part-card"
-                    :style="{ backgroundImage: `url(${item.picUrl})` }"
-                >
-                    <div class="part-number-of-statistics">
-                        <icon-font type="icon-erji101" class="icon" />
-                        <span class="part-statistics-text">{{
-                            `${(item.listenNum / 10000).toFixed(1)}万`
-                        }}</span>
+                <div v-for="item of cardItem.list" :key="item.topId" class="part-card-container">
+                    <icon-font type="icon-24gf-playCircle" class="part-play-icon" />
+                    <div class="part-card" :style="{ backgroundImage: `url(${item.picUrl})` }">
+                        <div class="part-number-of-statistics">
+                            <icon-font type="icon-erji2-copy" class="icon" />
+                            <span class="part-statistics-text">{{
+                                `${(item.listenNum / 10000).toFixed(1)}万`
+                            }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -59,6 +57,7 @@ API.getRankingList().then((res) => {
         &:hover {
             transform: translateY(-8px);
         }
+
         .peak-cover {
             width: 150px;
             height: 150px;
@@ -94,36 +93,56 @@ API.getRankingList().then((res) => {
     display: flex;
     flex-wrap: wrap;
     padding: 10px 10px 0 0;
-    .part-card {
+
+    .part-card-container {
         position: relative;
-        display: flex;
         width: 14.3%;
-        margin: 0 0 20px 20px;
-        transition: transform 0.4s ease;
-        padding-bottom: 14.3%;
-        background-size: 100% 100%;
-        border-radius: 8px;
-        &:hover {
-            transform: translateY(-8px);
-        }
-        .part-number-of-statistics {
+         padding-bottom: 14.3%;
+        .part-play-icon {
+            transform: scale(4);
+            // display: none;
             position: absolute;
-            right: 10px;
-            bottom: 10px;
-            width: 100px;
-            height: 21px;
-            line-height: 21px;
-            font-weight: 500;
-            font-size: 12px;
-            text-align: center;
-            background-color: black;
-            border-radius: 10px;
-            color: white;
-            .icon {
-                font-size: 14px;
+            left: 47%;
+            top: 46%;
+        }
+        .part-card {
+            display: flex;
+            width:100%;
+            height: 100%;
+            margin: 0 0 20px 20px;
+            transition: transform 0.4s ease;
+            // padding-bottom: 100%;
+            background-size: 100% 100%;
+            border-radius: 8px;
+            &:hover {
+                transform: translateY(-8px);
+                filter: brightness(35%);
+                .part-number-of-statistics {
+                    display: none;
+                }
+                .part-play-icon {
+                    display: block;
+                }
             }
-            .part-statistics-text {
-                margin-left: 2px;
+            .part-number-of-statistics {
+                position: absolute;
+                right: 10px;
+                bottom: 10px;
+                width: 100px;
+                height: 21px;
+                line-height: 21px;
+                font-weight: 500;
+                font-size: 12px;
+                text-align: center;
+                background-color: black;
+                border-radius: 10px;
+                color: white;
+                .icon {
+                    font-size: 14px;
+                }
+                .part-statistics-text {
+                    margin-left: 2px;
+                }
             }
         }
     }
