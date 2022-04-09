@@ -42,7 +42,7 @@ const onSearch = () => {
     // background-color: #f6f6f6;
     background: url("@/assets/img/bear-background.png") repeat;
     background-size: 10% 100%;
-    animation: bearBgMove 20s linear 1,bearBgMove2 20s linear 20s infinite;
+    animation: bearBgMove 80s linear 1,bearBgMove2 80s linear 80s infinite;
     display: flex;
 
     .input-search {
@@ -56,7 +56,7 @@ const onSearch = () => {
         background: url("@/assets/img/brear.png");
         background-size: 400px 25px;
         background-repeat: no-repeat;
-        animation: bear 0.8s steps(8) infinite, move 20s linear forwards;
+        animation: bear 0.8s steps(8) infinite, move 80s linear forwards;
     }
 }
 
