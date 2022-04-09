@@ -82,7 +82,7 @@ API.getRankingList().then((res) => {
     }
 }
 
-.part-title{
+.part-title {
     margin-left: 20px;
     font-weight: 600;
     font-size: 22px;
@@ -108,7 +108,7 @@ API.getRankingList().then((res) => {
                 position: absolute;
                 right: 10px;
                 bottom: 10px;
-                width: 77px;
+                width: calc(100% - 77px);
                 height: 21px;
                 font-weight: 500;
                 font-size: 12px;
@@ -124,4 +124,6 @@ API.getRankingList().then((res) => {
         }
     }
 }
+
+
 </style>
