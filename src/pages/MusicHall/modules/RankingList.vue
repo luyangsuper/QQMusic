@@ -11,18 +11,23 @@
                 </div>
             </div>
         </div>
-        <h3 class="part-title">地区榜</h3>
+        <div v-for="cardItem of otherList" :key="cardItem.title">
+            <h3 class="part-title">{{cardItem.title}}</h3>
         <div class="part-list-container">
-            <div v-for="item of partList" :key="item.topId" class="part-card">
-                <div :style="{ backgroundImage: `url(${item.picUrl})` }" class="part-cover">
-                    <div class="part-number-of-statistics">
-                        <icon-font type="icon-erji101" />
-                        <span class="part-statistics-text">{{
-                            `${(item.listenNum / 10000).toFixed(1)}万`
-                        }}</span>
-                    </div>
+            <div
+                v-for="item of cardItem.list"
+                :key="item.topId"
+                class="part-card"
+                :style="{ backgroundImage: `url(${item.picUrl})` }"
+            >
+                <div class="part-number-of-statistics">
+                    <icon-font type="icon-erji101" class="icon" />
+                    <span class="part-statistics-text">{{
+                        `${(item.listenNum / 10000).toFixed(1)}万`
+                    }}</span>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </template>
@@ -31,12 +36,10 @@
 import { ref } from "vue";
 import API from "../api.js";
 const peakList = ref([]);
-const partList = ref([]);
+const otherList = ref([]);
 API.getRankingList().then((res) => {
-    peakList.value = res.data.find((item) => item.title === "巅峰榜").list;
-});
-API.getRankingList().then((res) => {
-    partList.value = res.data.find((item) => item.title === "地区榜").list;
+    peakList.value = res.data.find(item => item.title === "巅峰榜").list;
+    otherList.value = res.data.filter(item => item.title !== "巅峰榜");
 });
 </script>
 
@@ -50,7 +53,7 @@ API.getRankingList().then((res) => {
         width: calc(33% - 20px);
         height: 100%;
         margin: 0 0 20px 20px;
-        background-color: #e5e7e9;
+        background-color: #efefef;
         border-radius: 8px;
         transition: transform 0.4s ease;
         &:hover {
@@ -92,38 +95,37 @@ API.getRankingList().then((res) => {
     flex-wrap: wrap;
     padding: 10px 10px 0 0;
     .part-card {
+        position: relative;
         display: flex;
+        width: 14.3%;
         margin: 0 0 20px 20px;
         transition: transform 0.4s ease;
+        padding-bottom: 14.3%;
+        background-size: 100% 100%;
+        border-radius: 8px;
         &:hover {
             transform: translateY(-8px);
         }
-        .part-cover {
-            width: 150px;
-            height: 150px;
-            background-size: 100% 100%;
-            border-radius: 8px;
-            position: relative;
-            .part-number-of-statistics {
-                position: absolute;
-                right: 10px;
-                bottom: 10px;
-                width: calc(100% - 77px);
-                height: 21px;
-                font-weight: 500;
-                font-size: 12px;
-                text-align: center;
-                line-height: 21px;
-                background-color: black;
-                border-radius: 10px;
-                color: #e5e7e9;
-                .part-statistics-text {
-                    margin-left: 2px;
-                }
+        .part-number-of-statistics {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            width: 100px;
+            height: 21px;
+            line-height: 21px;
+            font-weight: 500;
+            font-size: 12px;
+            text-align: center;
+            background-color: black;
+            border-radius: 10px;
+            color: white;
+            .icon {
+                font-size: 14px;
+            }
+            .part-statistics-text {
+                margin-left: 2px;
             }
         }
     }
 }
-
-
 </style>
