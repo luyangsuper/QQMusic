@@ -2,28 +2,27 @@
     <div>
         <div class="peak-list-container">
             <div v-for="item of peakList" :key="item.value" class="peak-card">
-                <div :style="{backgroundImage: `url(${item.picUrl})`}" class="peak-cover">
-                </div>
+                <div :style="{ backgroundImage: `url(${item.picUrl})` }" class="peak-cover"></div>
                 <div class="peak-content">
-                    <span class="peak-item-title">{{item.label}}</span>
-                    <div v-for="song of item.song" :key="song.songId" class="peak-song">{{`${song.rank} ${song.title} - ${song.singerName}`}}</div>
+                    <span class="peak-item-title">{{ item.label }}</span>
+                    <div v-for="song of item.song" :key="song.songId" class="peak-song">
+                        {{ `${song.rank} ${song.title} - ${song.singerName}` }}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
- 
+
 <script setup>
-import {ref} from 'vue'
-import API from '../api.js'
-const peakList = ref([])
-API.getRankingList()
-.then(res => {
-    peakList.value = res.data.find(item => item.title === "巅峰榜").list
-    console.log(peakList.value)
-})
+import { ref } from "vue";
+import API from "../api.js";
+const peakList = ref([]);
+API.getRankingList().then((res) => {
+    peakList.value = res.data.find((item) => item.title === "巅峰榜").list;
+});
 </script>
- 
+
 <style scoped lang="less">
 .peak-list-container {
     display: flex;
@@ -34,9 +33,9 @@ API.getRankingList()
         width: calc(33% - 20px);
         height: 100%;
         margin: 0 0 20px 20px;
-        background-color: #E5E7E9;
+        background-color: #e5e7e9;
         border-radius: 8px;
-        transition: transform .4s ease;
+        transition: transform 0.4s ease;
         &:hover {
             transform: translateY(-8px);
         }
