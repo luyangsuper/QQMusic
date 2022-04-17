@@ -13,7 +13,6 @@ import { watch, onMounted, ref } from "vue";
 import { useMainStore } from "../../store";
 import { storeToRefs } from "pinia";
 import API from "./api";
-import { preview } from "vite";
 const mainStore = useMainStore();
 const { currentSong } = storeToRefs(mainStore);
 onMounted(() => {
@@ -35,7 +34,7 @@ const _throttle = (fn, timeout) => {
         }, timeout);
     }
 }
-const percent = ref(0)
+let percent = 0
 let totalTime = 0
 
 const progress = ref(null)
@@ -43,10 +42,10 @@ const passedProgress = ref(null)
 const movePoint = e => {
     const {width, left} = progress.value.getBoundingClientRect()
     if(e) {
-        percent.value = (e.clientX - left / width).toFixed(2)
+        percent = ((e.clientX - left) / width).toFixed(5)
     }
-    const offsetX = progress.value.getBoundingClientRect().width * percent.value
-    // const offsetX = Math.floor(e.clientX - progress.value.getBoundingClientRect().left)
+    const offsetX = Math.floor(progress.value.getBoundingClientRect().width * percent)
+
     if(offsetX <= 0) {
         passedProgress.value.style.width = "0px"
     } else {
@@ -68,10 +67,12 @@ watch(currentSong, songmid => {
         .then(res => {
             let audio = new Audio(res.data);
             const test = () => {
-                percent.value = (audio.currentTime / totalTime).toFixed('2')
-                console.log(percent.value)
+                // console.log(audio.currentTime)
+                percent = (audio.currentTime / totalTime).toFixed(5)
+                console.log(percent)
+                movePoint()
             }
-            const newTest = _throttle(test, 1000)
+            const newTest = _throttle(test, 200)
             audio.addEventListener("canplaythrough", () => {
                 totalTime = Math.floor(audio.duration)
                 // audio.play();
@@ -90,12 +91,12 @@ watch(currentSong, songmid => {
         width: 100%;
         height: 3px;
         background-color: #f0f0f0;
-        transition: height .3s ease;
         .passed {
             position: relative;
             width: 100px;
             height: 100%;
             background: @primary-color;
+            transition: width .2s linear;
             .point {
                 opacity: 0;
                 display: inline-block;
