@@ -8,11 +8,26 @@
             rowKey="docid"
             :scroll="{ y: 700 }"
             :loading="tableLoading"
+            rowClassName="song-row"
             :pagination="false"
         >
             <template #bodyCell="{ column, record }">
+                <template v-if="column.dataIndex === 'songname'">
+                    <div class="songnanm-col">
+                        <div class="songname">{{ record.songname }}</div>
+                        <div class="extra-operation">
+                            <CaretRightOutlined @click="play(record)" />
+                            <PlusSquareOutlined />
+                            <VerticalAlignBottomOutlined />
+                            <EllipsisOutlined />
+                        </div>
+                    </div>
+                </template>
                 <template v-if="column.dataIndex === 'singer'">
-                    {{ record.singer.map(singer => singer.name).join(" / ") }}
+                    {{ record.singer.map((singer) => singer.name).join(" / ") }}
+                </template>
+                <template v-if="column.dataIndex === 'duration'">
+                    {{ secondConvertMinutes(record.interval) }}
                 </template>
             </template>
         </a-table>
@@ -28,6 +43,12 @@
 </template>
 
 <script setup>
+import {
+    CaretRightOutlined,
+    PlusSquareOutlined,
+    VerticalAlignBottomOutlined,
+    EllipsisOutlined,
+} from "@ant-design/icons-vue";
 import { reactive, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useMainStore } from "../../store";
@@ -35,7 +56,7 @@ import { useRoute } from "vue-router";
 import axios from "axios";
 import API from "./api";
 const mainStore = useMainStore();
-const { searchObject } = storeToRefs(mainStore);
+const { searchObject, currentSong } = storeToRefs(mainStore);
 const route = useRoute();
 const dataSource = ref([]);
 const pageOption = reactive({
@@ -43,32 +64,25 @@ const pageOption = reactive({
     pageSize: 20,
     total: 0,
 });
-
-
-// countdownMinutes = countdownMinutes * 60;
-// const countdownString = ref("");
-// let spendTime = 0;
-// const myVal = setInterval(() => {
-//   countdownMinutes--;
-//   spendTime++;
-
-//   // studentAnswerPaper.spendTime++;
-//   if (countdownMinutes * 1000 <= 0) {
-//     clearInterval(myVal);
-//     onClose();
-//   }
-//   let minutes = Number.parseInt(countdownMinutes / 60);
-//   let seconds = countdownMinutes % 60;
-//   if (countdownMinutes) {
-//     countdownString.value = minutes
-//       ? `倒计时：${minutes}分${seconds}秒`
-//       : `倒计时：${seconds}秒`;
-//   } else {
-//     countdownString.value = "时间到";
-//   }
-// }, 1000);
-
-
+const columns = [
+    {
+        title: "歌曲",
+        dataIndex: "songname",
+        ellipsis: true,
+    },
+    {
+        title: "歌手",
+        dataIndex: "singer",
+    },
+    {
+        title: "专辑",
+        dataIndex: "albumname",
+    },
+    {
+        title: "时长",
+        dataIndex: "duration",
+    },
+];
 const tableLoading = ref(false);
 watch(searchObject, () => {
     paginationChange(1);
@@ -96,29 +110,42 @@ const paginationChange = (currentPage) => {
             tableLoading.value = false;
         });
 };
-const columns = [
-    {
-        title: "歌曲",
-        dataIndex: "songname",
-        ellipsis: true,
-    },
-    {
-        title: "歌手",
-        dataIndex: "singer",
-    },
-    {
-        title: "专辑",
-        dataIndex: "albumname",
-    },
-    {
-        title: "时长",
-        dataIndex: "",
-    },
-];
+const secondConvertMinutes = (interval) => {
+    const minutes = Number.parseInt(interval / 60) + "";
+    const seconds = (interval % 60) + "";
+    return `${minutes.padStart(2, "0")}:${seconds.padStart(2, "0")}`;
+};
+const play = (record) => {
+    currentSong.value = record.songmid;
+};
 </script>
 
 <style scoped lang="less">
 :deep(.ant-menu) {
     background: inherit;
+}
+:deep(.song-row) {
+    // background: red;
+    &:hover {
+        // display: flex;
+        .extra-operation {
+            display: flex;
+        }
+    }
+}
+.songnanm-col {
+    display: flex;
+    justify-content: space-between;
+    .extra-operation {
+        display: none;
+        justify-content: space-evenly;
+        width: 100px;
+        cursor: pointer;
+    }
+    .songname {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }
 </style>

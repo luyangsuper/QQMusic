@@ -4,7 +4,8 @@ export const useMainStore = defineStore('main', {
         return {
             searchObject: {
                 value: ''
-            }
+            },
+            currentSong: null
         }
     }
 })

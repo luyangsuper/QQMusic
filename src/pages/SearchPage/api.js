@@ -6,7 +6,7 @@ export default {
         return new Promise((resolve, reject) => {
             axios.get(`api/search?${qs.stringify(params)}`)
                 .then(res => {
-                    if(res.data.result !== 100) {
+                    if (res.data.result !== 100) {
                         message.error(res.data.errMsg)
                         reject(res.data)
                     }
