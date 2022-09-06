@@ -10,7 +10,8 @@
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+</script>
 
 <style>
 .fade-enter-active,
@@ -28,7 +29,7 @@
 <style scoped lang="less">
 .section-container {
     overflow: auto;
-    height: calc(100% - 152px);
+    height: calc(100% - 145px);
     width: 100%;
     background-color: #f6f6f6;
 }

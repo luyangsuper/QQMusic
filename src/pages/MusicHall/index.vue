@@ -16,7 +16,7 @@ const currentComponent = shallowRef();
 const tabList = [
     {
         title: '排行榜',
-        component: defineAsyncComponent(() => import('./modules/RankingList.vue'))
+        component: defineAsyncComponent(() => import('./components/RankingList.vue'))
     }
 ]
 onMounted(() => {

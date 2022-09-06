@@ -3,7 +3,7 @@
         <div>
             <a-input-search
                 v-model:value="value"
-                placeholder="input search text"
+                placeholder="搜索音乐"
                 class="input-search"
                 @search="onSearch"
                 @keyup.enter="onSearch"
