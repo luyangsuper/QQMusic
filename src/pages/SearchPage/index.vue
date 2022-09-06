@@ -24,7 +24,7 @@
                     </div>
                 </template>
                 <template v-if="column.dataIndex === 'singer'">
-                    {{ record.singer.map((singer) => singer.name).join(" / ") }}
+                    {{ record.singer.map(singer => singer.name).join(" / ") }}
                 </template>
                 <template v-if="column.dataIndex === 'duration'">
                     {{ secondConvertMinutes(record.interval) }}
@@ -49,7 +49,7 @@ import {
     VerticalAlignBottomOutlined,
     EllipsisOutlined,
 } from "@ant-design/icons-vue";
-import { reactive, ref, watch } from "vue";
+import { reactive, ref, watch, ComponentOptionsMixin } from "vue";
 import { storeToRefs } from "pinia";
 import { useMainStore } from "../../store";
 import { useRoute } from "vue-router";
@@ -91,7 +91,7 @@ watch(searchObject, () => {
  * @description: 歌曲分页查询
  * @param {Number} 点击的页数
  */
-const paginationChange = (currentPage) => {
+const paginationChange = currentPage => {
     tableLoading.value = true;
     pageOption.current = currentPage;
     const params = {
@@ -100,7 +100,7 @@ const paginationChange = (currentPage) => {
         pageNo: pageOption.current,
     };
     API.getSongPage(params)
-        .then((res) => {
+        .then(res => {
             dataSource.value = res.data.list;
             pageOption.total = res.data.total;
             console.log(res.data.list);
@@ -110,13 +110,13 @@ const paginationChange = (currentPage) => {
             tableLoading.value = false;
         });
 };
-const secondConvertMinutes = (interval) => {
+const secondConvertMinutes = interval => {
     const minutes = Number.parseInt(interval / 60) + "";
     const seconds = (interval % 60) + "";
     return `${minutes.padStart(2, "0")}:${seconds.padStart(2, "0")}`;
 };
-const play = (record) => {
-    currentSong.value = record.songmid;
+const play = record => {
+    currentSong.value = { songmid: record.songmid, albummid: record.albummid, singer: record.singer, songName: record.songname };
 };
 </script>
 
