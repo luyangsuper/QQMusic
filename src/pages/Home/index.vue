@@ -24,7 +24,8 @@ import Footer from './Footer.vue'
     .content {
         display: flex;
         flex-direction: column;
-        width: 100%;
+        flex: 1;
+        width: calc(100% - 200px)
     }
 }
 </style>

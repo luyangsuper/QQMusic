@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="peak-list-container">
-            <div v-for="item of peakList" :key="item.value" class="peak-card">
+            <div v-for="item of peakList" :key="item.value" class="peak-card" @click="showDetail(item)">
                 <div :style="{ backgroundImage: `url(${item.picUrl})` }" class="peak-cover"></div>
                 <div class="peak-content">
                     <span class="peak-item-title">{{ item.label }}</span>
@@ -14,16 +14,19 @@
         <div v-for="cardItem of otherList" :key="cardItem.title">
             <h3 class="part-title">{{ cardItem.title }}</h3>
             <div class="part-list-container">
-                <div v-for="item of cardItem.list" :key="item.topId" class="part-card-container">
+                <div
+                    v-for="item of cardItem.list"
+                    :key="item.topId"
+                    class="part-card-container"
+                    @click="showDetail(item)"
+                >
                     <!-- <icon-font type="icon-24gf-playCircle" class="part-play-icon" /> -->
                     <!-- <play-circle-two-tone  class="part-play-icon"/> -->
                     <play-circle-filled class="part-play-icon" />
                     <div class="part-card" :style="{ backgroundImage: `url(${item.picUrl})` }">
                         <div class="part-number-of-statistics">
                             <icon-font type="icon-erji2-copy" class="icon" />
-                            <span class="part-statistics-text">{{
-                                `${(item.listenNum / 10000).toFixed(1)}万`
-                            }}</span>
+                            <span class="part-statistics-text">{{ `${(item.listenNum / 10000).toFixed(1)}万` }}</span>
                         </div>
                     </div>
                 </div>
@@ -33,27 +36,32 @@
 </template>
 
 <script setup>
-import { PlayCircleFilled } from "@ant-design/icons-vue";
-import { ref } from "vue";
-import API from "../api.js";
+import { CodeSandboxSquareFilled, PlayCircleFilled } from '@ant-design/icons-vue';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import api from '../api.js';
+const router = useRouter();
 const peakList = ref([]);
 const otherList = ref([]);
-API.getRankingList().then((res) => {
-    peakList.value = res.data.find((item) => item.title === "巅峰榜").list;
-    otherList.value = res.data.filter((item) => item.title !== "巅峰榜");
+api.getRankingList().then(res => {
+    peakList.value = res.data.find(item => item.title === '巅峰榜').list;
+    otherList.value = res.data.filter(item => item.title !== '巅峰榜');
 });
+
+function showDetail(item) {
+    router.push({ path: '/rankingDetail', query: { id: item.topId, period: item.period } });
+}
 </script>
 
 <style scoped lang="less">
 .peak-list-container {
     display: flex;
     flex-wrap: wrap;
-    padding: 10px 10px 0 0;
     .peak-card {
         display: flex;
         width: calc(33% - 20px);
         height: 100%;
-        margin: 0 0 20px 20px;
+        margin: 0 20px 20px 0;
         background-color: #efefef;
         border-radius: 8px;
         transition: transform 0.4s ease;
@@ -88,20 +96,18 @@ API.getRankingList().then((res) => {
 }
 
 .part-title {
-    margin-left: 20px;
     font-weight: 600;
     font-size: 22px;
 }
 .part-list-container {
     display: flex;
     flex-wrap: wrap;
-    padding: 10px 10px 0 0;
 
     .part-card-container {
         position: relative;
         overflow: hidden;
         width: 14.3%;
-        margin: 0 0 20px 20px;
+        margin: 0 20px 20px 0;
         transition: transform 0.4s ease;
         border-radius: 8px;
         cursor: pointer;

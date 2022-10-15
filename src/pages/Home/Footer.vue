@@ -1,121 +1,220 @@
 <template>
     <div class="footer-container">
-        <div class="progress" ref="progress" @click="movePoint">
-            <div class="passed" ref="passedProgress">
-                <span class="point" @mousedown="dragPoint"></span>
+        <div class="progress-wrap" ref="progressWrap" @click="progressClick">
+            <div class="progress-bar" ref="progressBar">
+                <div class="dot" ref="dot"></div>
             </div>
         </div>
         <div class="footer-content">
             <div class="cover-container">
-                <img :src="songState.albumCoverSrc" alt="专辑" class="album-cover" />
+                <div class="album-cover-container">
+                    <img :src="songState.albumCoverSrc" alt="" class="album-cover" />
+                    <div class="cover-hover" @click="toggleDrawerShow">
+                        <DoubleRightOutlined />
+                    </div>
+                </div>
                 <div class="option">
-                    <p class="song-title">{{ songState.songName }}</p>
-                    <span></span>
+                    <span class="song-title">{{ mainStore.currentSong.songName }}</span>
+                    -
+                    <span>
+                        <span
+                        v-for="(item, index) in mainStore.currentSong.singer"
+                        :key="item.mid"
+                        class="singer-text"
+                        @click="goToDetailPage(routerInstance, routeInstance, '/singerDetail', item.mid)"
+                    >
+                        {{ index === 0 ? `${item.name}` : ` / ${item.name}` }}</span
+                    >
+                        </span>
                 </div>
             </div>
             <div class="play-option">
                 <a-tooltip title="上一首" color="white" overlayClassName="play-tip">
-                    <step-backward-outlined class="icon" />
+                    <step-backward-outlined class="icon" @click="preSongClick" />
                 </a-tooltip>
-                <a-tooltip title="播发" color="white" overlayClassName="play-tip">
-                    <pause-circle-filled class="play-icon" />
+                <a-tooltip v-if="audioObj.state === 'playing'" title="暂停" color="white" overlayClassName="play-tip">
+                    <pause-circle-filled class="center-icon" @click="pause" />
                 </a-tooltip>
-                <a-tooltip title="上一首" color="white" overlayClassName="play-tip">
-                    <step-forward-outlined class="icon" />
+                <a-tooltip v-else title="播放" color="white" overlayClassName="play-tip">
+                    <play-circle-filled class="center-icon" @click="play" />
+                </a-tooltip>
+                <a-tooltip title="下一首" color="white" overlayClassName="play-tip">
+                    <step-forward-outlined class="icon" @click="nextSongClick" />
                 </a-tooltip>
             </div>
-            <div>
-                
+            <div class="play-order">
+                <a-dropdown>
+                    <template #overlay>
+                        <a-menu @click="playTypeChange">
+                            <a-menu-item key="loop">loop</a-menu-item>
+                            <a-menu-item key="order">order</a-menu-item>
+                            <!-- <a-menu-item key="3">3rd item</a-menu-item> -->
+                        </a-menu>
+                    </template>
+                    <a-button type="text">
+                        {{ playType }}
+                    </a-button>
+                </a-dropdown>
+                <BarsOutlined class="play-list-icon" @click="togglePlayListDrawerShow(true)" />
             </div>
         </div>
     </div>
+    <PlayDrawer :visible="playDrawerVisible" @close="toggleDrawerShow"></PlayDrawer>
+    <PlayListDrawer :visible="playListDrawerVisible" @close="togglePlayListDrawerShow"></PlayListDrawer>
 </template>
 
 <script setup>
-import { watch, onMounted, ref, reactive } from "vue";
-import { useMainStore } from "../../store";
-import { storeToRefs } from "pinia";
+import { watch, onMounted, ref, reactive } from 'vue';
+import { useMainStore } from '../../store';
+import { storeToRefs } from 'pinia';
 import {
+    DoubleRightOutlined,
+    DownOutlined,
+    BarsOutlined,
     StepBackwardOutlined,
     StepForwardOutlined,
     PauseCircleFilled,
-} from "@ant-design/icons-vue";
-import API from "./api";
+    PlayCircleFilled,
+    ConsoleSqlOutlined,
+} from '@ant-design/icons-vue';
+import PlayDrawer from './play.vue';
+import PlayListDrawer from './PlayListDrawer.vue';
+import api from './api';
+import { useRouter, useRoute } from 'vue-router';
+import { getAlbumImg, goToDetailPage } from '@/common/utils';
+const routerInstance = useRouter();
+const routeInstance = useRoute();
 const mainStore = useMainStore();
-const { currentSong } = storeToRefs(mainStore);
+const { playList, playIndex, audioObj, playType } = storeToRefs(mainStore);
+const progressWrap = ref(null);
+const progressBar = ref(null);
+const dot = ref(null);
+function dotMove(e) {
+    e.preventDefault();
+    let width = e.pageX - progressWrap.value.offsetLeft;
+    let progressX = width > progressWrap.value.offsetWidth ? progressWrap.value.offsetWidth : width;
+    progressBar.value.style.width = progressX + 'px';
+    audioObj.value.instance.currentTime = Number(
+        ((progressX / progressWrap.value.offsetWidth) * mainStore.audioInstance.duration).toFixed(6)
+    );
+}
+function progressClick(e) {
+    let width = e.pageX - progressWrap.value.offsetLeft;
+    progressBar.value.style.width = width + 'px';
+    audioObj.value.instance.currentTime = Number(
+        ((width / progressWrap.value.offsetWidth) * mainStore.audioInstance.duration).toFixed(6)
+    );
+}
 onMounted(() => {
-    API.setCookie().then(res => {
+    dot.value.addEventListener('mousedown', () => {
+        document.body.addEventListener('mousemove', dotMove);
+    });
+    document.body.addEventListener('mouseup', () => {
+        document.body.removeEventListener('mousemove', dotMove);
+    });
+    api.setCookie().then(res => {
         console.log(res);
     });
 });
 
-const _throttle = (fn, timeout) => {
-    let waiting = false;
-    return function newFn() {
-        if (waiting) {
-            return;
-        }
-        waiting = true;
-        setTimeout(() => {
-            fn();
-            waiting = false;
-        }, timeout);
-    };
-};
-let percent = 0;
-let totalTime = 0;
+const playDrawerVisible = ref(false);
+function toggleDrawerShow() {
+    playDrawerVisible.value = !playDrawerVisible.value;
+}
 
-const progress = ref(null);
-const passedProgress = ref(null);
-const movePoint = e => {
-    const { width, left } = progress.value.getBoundingClientRect();
-    if (e) {
-        percent = ((e.clientX - left) / width).toFixed(5);
-    }
-    const offsetX = Math.floor(progress.value.getBoundingClientRect().width * percent);
-
-    if (offsetX <= 0) {
-        passedProgress.value.style.width = "0px";
-    } else {
-        passedProgress.value.style.width = `${offsetX}px`;
-    }
-};
-const dragPoint = () => {
-    document.addEventListener("mousemove", movePoint);
-    document.addEventListener("mouseup", removeDragEvent);
-};
-const removeDragEvent = () => {
-    document.removeEventListener("mouseup", removeDragEvent);
-    document.removeEventListener("mousemove", movePoint);
-};
-
+const playListDrawerVisible = ref(false);
+function togglePlayListDrawerShow(show) {
+    playListDrawerVisible.value = show;
+}
 const songState = reactive({
-    albumCoverSrc: "",
-    songName: "",
-    singer: "",
+    albumCoverSrc: ''
 });
-watch(currentSong, ({ songmid, albummid, songName }) => {
-    songState.albumCoverSrc = `https://y.gtimg.cn/music/photo_new/T002R300x300M000${albummid}.jpg`;
-    songState.songName = songName;
-    API.getSonUrl(songmid)
-        .then(res => {
-            let audio = new Audio(res.data);
-            const test = () => {
-                // console.log(audio.currentTime)
-                percent = (audio.currentTime / totalTime).toFixed(5);
-                movePoint();
-            };
-            const newTest = _throttle(test, 200);
-            audio.addEventListener("canplaythrough", () => {
-                totalTime = Math.floor(audio.duration);
-                // audio.play();
-                // audio.currentTime = 35
-                audio.play();
-            });
-            audio.addEventListener("timeupdate", newTest);
-        })
-        .catch(() => {});
+watch(playIndex, () => {
+    if (playIndex !== null) {
+        api.getSongDetail(mainStore.currentSong.songmid).then(res => {
+            songState.albumCoverSrc = getAlbumImg(res.track_info?.album?.mid);
+        });
+        if (mainStore.audioInstance) {
+            pause();
+            removeListener();
+            audioObj.value.instance = null;
+        }
+        audioObj.value.instance = new Audio(mainStore.currentSong.url);
+        addEventListener();
+    }
 });
+function addEventListener() {
+    mainStore.audioInstance.addEventListener('canplaythrough', play);
+    mainStore.audioInstance.addEventListener('pause', audioPaused);
+    mainStore.audioInstance.addEventListener('playing', audioPlaying);
+    mainStore.audioInstance.addEventListener('ended', audioEnded);
+    mainStore.audioInstance.addEventListener('timeupdate', timeUpdate);
+}
+function removeListener() {
+    mainStore.audioInstance.removeEventListener('canplaythrough', play);
+    mainStore.audioInstance.removeEventListener('pause', audioPaused);
+    mainStore.audioInstance.removeEventListener('playing', audioPlaying);
+    mainStore.audioInstance.removeEventListener('ended', audioEnded);
+    mainStore.audioInstance.removeEventListener('timeupdate', timeUpdate);
+}
+function audioPaused() {
+    audioObj.value.state = 'paused';
+}
+function pause() {
+    mainStore.audioInstance.pause();
+}
+function audioPlaying() {
+    audioObj.value.state = 'playing';
+}
+function play() {
+    mainStore.audioInstance.play();
+}
+function timeUpdate() {
+    const duration = mainStore.audioInstance.duration;
+    const width = Math.floor((mainStore.audioInstance.currentTime / duration) * progressWrap.value.offsetWidth);
+    progressBar.value.style.width = width + 'px';
+}
+function preSongClick() {
+    const length = playList.value.length;
+    if (length) {
+        if (length > 1) {
+            if (playIndex.value === 0) {
+                playIndex.value = length - 1;
+            } else {
+                playIndex.value--;
+            }
+        }
+    }
+}
+function nextSongClick() {
+    const length = playList.value.length;
+    if (length) {
+        if (length > 1) {
+            if (playIndex.value === length - 1) {
+                playIndex.value = 0;
+            } else {
+                playIndex.value++;
+            }
+        }
+    }
+}
+function audioEnded() {
+    const mapping = {
+        loop() {
+            play();
+        },
+        order() {
+            nextSongClick();
+        },
+    };
+    mapping[playType.value]?.();
+}
+function playTypeChange(item) {
+    playType.value = item.key;
+}
+function seek() {
+    audio.value.currentTime = 20;
+}
 </script>
 <style lang="less">
 .play-tip {
@@ -127,53 +226,104 @@ watch(currentSong, ({ songmid, albummid, songName }) => {
 <style scoped lang="less">
 .footer-container {
     // height: 80px;
-    .progress {
+    background-color: #f6f6f6;
+    .progress-wrap {
         width: 100%;
         height: 3px;
-        background-color: #f0f0f0;
-        .passed {
-            position: relative;
-            width: 0;
-            height: 100%;
-            background: @primary-color;
-            transition: width 0.2s linear;
-            .point {
-                opacity: 0;
-                display: inline-block;
-                position: absolute;
-                right: -6px;
-                top: 50%;
-                width: 12px;
-                height: 12px;
-                border-radius: 50%;
-                background-color: inherit;
-                transform: translateY(-50%);
-                transition: opacity 0.3s ease;
-            }
-        }
+        background-color: #eaeded;
         &:hover {
-            .point {
+            .dot {
                 opacity: 1;
             }
         }
+    }
+    .progress-bar {
+        position: relative;
+        width: 0;
+        height: 100%;
+        background-color: @primary-color;
+    }
+    .dot {
+        opacity: 0;
+        position: absolute;
+        right: -5px;
+        bottom: -4px;
+        width: 10px;
+        height: 10px;
+        cursor: pointer;
+        border-radius: 50%;
+        background-color: @primary-color;
+        transition: opacity 0.2s;
     }
     .footer-content {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 10px 20px;
+        > div {
+            width: 33%;
+        }
         .cover-container {
+            display: flex;
             .option {
-                display: inline-block;
                 padding-left: 10px;
+                .singer-text {
+                    color: gray;
+                    cursor: pointer;
+                    &:hover {
+                        color: @primary-color;
+                    }
+                }
             }
             .song-title {
                 display: inline-block;
             }
-            .album-cover {
+            .album-cover-container {
+                overflow: hidden;
+                position: relative;
                 width: 50px;
                 height: 50px;
                 border-radius: 4px;
+                &:hover {
+                    .cover-hover {
+                        transform: rotate(-90deg) translateX(0);
+                    }
+                    .album-cover {
+                        filter: brightness(65%);
+                    }
+                }
+            }
+            .album-cover {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                &:after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: red;
+                }
+            }
+            .cover-hover {
+                position: absolute;
+                z-index: 3;
+                top: 0;
+                left: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                transform: rotate(-90deg) translateX(-100%);
+                width: 100%;
+                height: 100%;
+                transition: transform 0.2s;
+                // background: blue;
+                span {
+                    color: white;
+                    font-size: 20px;
+                }
             }
         }
         .play-option {
@@ -188,11 +338,21 @@ watch(currentSong, ({ songmid, albummid, songName }) => {
                     color: @primary-color;
                 }
             }
-            .play-icon {
+            .center-icon {
                 color: @primary-color;
                 font-size: 36px;
                 cursor: pointer;
             }
+        }
+        .play-order {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        .play-list-icon {
+            cursor: pointer;
+            color: @primary-color;
+            font-size: 20px;
         }
     }
 }

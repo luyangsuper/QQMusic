@@ -1,7 +1,7 @@
 <template>
     <div class="section-container">
         <router-view v-slot="{ Component }">
-            <keep-alive>
+            <keep-alive :exclude="['rankingDetail']">
                 <transition name="fade" mode="out-in">
                     <component :is="Component" />
                 </transition>
@@ -10,8 +10,7 @@
     </div>
 </template>
 
-<script setup>
-</script>
+<script setup></script>
 
 <style>
 .fade-enter-active,

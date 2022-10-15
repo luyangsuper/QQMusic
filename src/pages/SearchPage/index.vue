@@ -49,7 +49,7 @@ import {
     VerticalAlignBottomOutlined,
     EllipsisOutlined,
 } from "@ant-design/icons-vue";
-import { reactive, ref, watch, ComponentOptionsMixin } from "vue";
+import { reactive, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useMainStore } from "../../store";
 import { useRoute } from "vue-router";
@@ -96,14 +96,14 @@ const paginationChange = currentPage => {
     pageOption.current = currentPage;
     const params = {
         key: searchObject.value.value,
-        pageSize: 20,
-        pageNo: pageOption.current,
+        // pageSize: 20,
+        // pageNo: pageOption.current,
     };
     API.getSongPage(params)
         .then(res => {
+            console.log(res, 666)
             dataSource.value = res.data.list;
             pageOption.total = res.data.total;
-            console.log(res.data.list);
         })
         .catch(() => {})
         .finally(() => {

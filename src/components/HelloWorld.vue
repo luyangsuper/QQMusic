@@ -1,30 +1,27 @@
 <template>
-<div>
-  <a-button type="primary">1234</a-button>
-  <div class="test">
-    <div>123</div>
-  </div>
-</div>
+    <div class="test-container">
+        <InfiniteList :listData="listData" height="400px">
+            <template #default="{item}">
+                <div class="test-item">
+                    <span>{{item.key}}</span>
+                </div>
+            </template>
+        </InfiniteList>
+    </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
-defineProps({
-  msg: String,
-});
-
-const count = ref(0);
+import { ref } from 'vue';
+import InfiniteList from './InfiniteList.vue';
+const listData = Array.from({ length: 100 }).map((item, index) => ({key: index}));
 </script>
 
 <style scoped lang="less">
-.test{
-    div{
-        width: 100px;
-        height: 100px;
-        background: red;
+    .test-container {
+        height: 400px;
     }
-}
-a {
-  color: #42b983;
-}
+    .test-item {
+        background-color: red;
+        padding: 10px;
+    }
 </style>
