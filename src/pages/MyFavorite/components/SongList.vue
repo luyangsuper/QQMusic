@@ -105,9 +105,9 @@ function play(record, id) {
         };
         mainStore.addSongAndPlay(song);
     }
-    let img = document.getElementById(`img-${id}`)
-    const colorThief = new ColorThief();
-    console.log(colorThief.getColor(img), img)
+    // let img = document.getElementById(`img-${id}`)
+    // const colorThief = new ColorThief();
+    // console.log(colorThief.getColor(img), img)
 }
 function playingClass(record, ...otherClass) {
     const classObj = {
